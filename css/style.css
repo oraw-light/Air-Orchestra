@@ -1,0 +1,66 @@
+:root {
+  --bg: #05060a;
+  --fg: #f2f4ff;
+  --muted: #8a90a8;
+  --accent: #7cf3ff;
+  --accent2: #c58bff;
+  --warn: #ffb86b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--fg);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+#stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+video { display: none; }
+
+/* Start screen */
+#start {
+  position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px; text-align: center; padding: 24px;
+  background: radial-gradient(ellipse at 50% 40%, #151a33 0%, var(--bg) 70%);
+  z-index: 10; transition: opacity .5s ease;
+}
+#start.hidden { opacity: 0; pointer-events: none; }
+#start h1 { font-size: clamp(40px, 8vw, 96px); font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#start p { color: var(--muted); max-width: 520px; line-height: 1.6; font-size: 16px; }
+#startBtn {
+  font: inherit; font-size: 22px; font-weight: 700; color: #05060a; cursor: pointer;
+  padding: 20px 52px; border: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 40px rgba(124,243,255,.35), 0 0 80px rgba(197,139,255,.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+#startBtn:hover { transform: scale(1.04); box-shadow: 0 0 60px rgba(124,243,255,.5), 0 0 100px rgba(197,139,255,.35); }
+#startBtn:disabled { opacity: .6; cursor: progress; transform: none; }
+.hint { font-size: 13px; color: var(--muted); }
+
+/* Status message (camera blocked, no hands, loading) */
+#status {
+  position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%);
+  padding: 12px 22px; border-radius: 999px; font-size: 15px;
+  background: rgba(10,12,22,.75); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px);
+  z-index: 5; transition: opacity .3s ease; max-width: calc(100% - 32px); text-align: center;
+}
+#status.hidden { opacity: 0; }
+#status.error { color: var(--warn); border-color: rgba(255,184,107,.4); }
+
+#hud { position: fixed; top: 16px; right: 16px; font: 12px ui-monospace, Consolas, monospace; color: var(--muted); z-index: 5; text-align: right; }
+
+/* Debug readout, toggled with D */
+#readout { position: fixed; top: 40px; right: 16px; z-index: 5; font: 12px ui-monospace, Consolas, monospace;
+  color: var(--muted); line-height: 1.6; text-align: right; white-space: pre-line; display: none; }
+#readout.show { display: block; }
+
+/* Big note + instrument label */
+#label { position: fixed; top: 4vh; left: 50%; transform: translateX(-50%); text-align: center;
+  z-index: 4; pointer-events: none; --hue: 200; transition: opacity .6s ease; }
+#label.hidden { opacity: 0; }
+#noteName { font: 700 clamp(72px, 13vw, 168px)/1 "Space Grotesk", system-ui, sans-serif; letter-spacing: -0.04em;
+  color: #fff; transition: opacity .4s ease;
+  text-shadow: 0 0 24px hsla(var(--hue), 100%, 60%, .9), 0 0 80px hsla(var(--hue), 100%, 55%, .6); }
+#noteName.idle { opacity: .18; }
+#instName { margin-top: 8px; font: 600 clamp(12px, 1.4vw, 16px) "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: .35em; text-transform: uppercase; color: hsl(var(--hue), 100%, 80%); opacity: .85; }
+.pop { animation: pop .35s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes pop { from { transform: scale(1.18); } to { transform: scale(1); } }
+body.playing { cursor: none; }

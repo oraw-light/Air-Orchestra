@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Air Orchestra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+<video id="video" playsinline muted></video>
+
+<div id="start">
+  <h1>Air Orchestra</h1>
+  <p>Play music by moving your hands in front of the camera.<br>
+     Left hand sets pitch. Right hand sets volume and tone. Pinch to drum.</p>
+  <button id="startBtn">Start Playing</button>
+  <div class="hint">Needs camera access · Press F for fullscreen</div>
+</div>
+
+<div id="status" class="hidden"></div>
+<div id="hud"></div>
+<div id="readout"></div>
+<div id="label" class="hidden"><div id="noteName">A3</div><div id="instName">Soft Pad</div></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

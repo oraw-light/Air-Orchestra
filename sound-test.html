@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound Test</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 20px; background: #05060a; color: #f2f4ff; font: 16px system-ui, sans-serif; padding: 16px; }
+  button { font: 700 20px system-ui, sans-serif; padding: 16px 40px; border: 0; border-radius: 999px; cursor: pointer;
+    background: #7cf3ff; color: #05060a; }
+  pre { color: #8a90a8; white-space: pre-wrap; text-align: left; max-width: 520px; }
+</style>
+</head>
+<body>
+<h1>Sound Test</h1>
+<button id="beep">Play 1-second beep</button>
+<pre id="info">Click the button.</pre>
+<script>
+let ac;
+document.getElementById("beep").addEventListener("click", async () => {
+  const info = document.getElementById("info");
+  try {
+    ac = ac || new AudioContext();
+    await ac.resume();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.frequency.value = 440;
+    g.gain.value = 0.3;
+    o.connect(g); g.connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + 1);
+    info.textContent =
+      `state: ${ac.state}\n` +
+      `sample rate: ${ac.sampleRate} Hz\n` +
+      `output latency: ${ac.outputLatency ?? "n/a"}\n` +
+      `time running: ${ac.currentTime.toFixed(2)} s`;
+    setTimeout(() => { info.textContent += `\ntime after 1 s: ${ac.currentTime.toFixed(2)} s (should have grown by ~1)`; }, 1000);
+  } catch (e) {
+    info.textContent = "Error: " + e.message;
+  }
+});
+</script>
+</body>
+</html>
